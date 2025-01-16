@@ -40,6 +40,7 @@ The project structure is organized into modules, following a clean and scalable 
    ```bash
     npm install
 3. Set up environment variables: Create a .env file in the root of the project with the following variables:
+   ```env
     DATABASE_URL=postgresql://user:password@localhost:5432/database
     PORT=3000
     SECRET_KEY=your_jwt_secret_key
@@ -48,13 +49,16 @@ The project structure is organized into modules, following a clean and scalable 
     ```bash
     docker-compose up -d
 5. Run Prisma Migrations:Sync the database schema with Prisma:
+   ```bash
    npx prisma migrate dev
 6. Run the Seed Script:To populate your database with initial data, execute the seed script:
+   ```bash
    npm run prisma:seed
 
 ## Usage
 
 1. Running the Project: Development mode
+   ```bash
     npm run start:dev
 
 2. Testing the API: Once the server is running, you can test the API at:
