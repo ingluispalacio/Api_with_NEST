@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: luis
+      POSTGRES_PASSWORD: luis04
+      POSTGRES_DB: nestdb
+    volumes:
+      - ./data:/vas/lib/postgresql/data
+    ports:
+      - 5499:5432
