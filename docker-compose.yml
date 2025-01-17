@@ -4,8 +4,8 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: luis
-      POSTGRES_PASSWORD: luis04
+      POSTGRES_USER: your_user
+      POSTGRES_PASSWORD: your_password
       POSTGRES_DB: nestdb
     volumes:
       - ./data:/vas/lib/postgresql/data
