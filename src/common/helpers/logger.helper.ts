@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
-import { CreateLogDto } from 'src/modules/logs/dto/create-log.dto';
+import { CreateAuditDto } from 'src/modules/audits/dto/create-audit.dto';
 
 @Injectable()
 export class LoggerHelper {
@@ -22,7 +22,7 @@ export class LoggerHelper {
     const endpoint = request?.route?.path || 'UNKNOWN';
     const method = request?.method || 'UNKNOWN';
 
-    const logData: CreateLogDto = {
+    const logData: CreateAuditDto = {
       userId,
       endpoint,
       method,

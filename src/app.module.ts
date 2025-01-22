@@ -8,7 +8,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
-import { LogsModule } from './modules/logs/logs.module';
+import { AuditsModule } from './modules/audits/audits.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { LogsModule } from './modules/logs/logs.module';
     UsersModule,
     RolesModule,
     PermissionsModule,
-    LogsModule,
+    AuditsModule,
   ],
   controllers: [],
   providers: [
