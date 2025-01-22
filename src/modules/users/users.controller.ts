@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthzGuard } from 'src/resources/auth/guards/authz/authz.guard';
-import { CurrentUser } from 'src/resources/auth/decorators/current-user.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { AuthzGuard } from 'src/common/guards/authz/authz.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @ApiBearerAuth('access-token') 
 @Controller('users')

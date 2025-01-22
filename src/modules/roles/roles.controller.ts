@@ -3,7 +3,7 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthzGuard } from '../auth/guards/authz/authz.guard';
+import { AuthzGuard } from 'src/common/guards/authz/authz.guard';
 
 @ApiBearerAuth('access-token') 
 @Controller('roles')

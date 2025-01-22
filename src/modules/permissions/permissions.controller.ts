@@ -3,7 +3,7 @@ import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthzGuard } from '../auth/guards/authz/authz.guard';
+import { AuthzGuard } from 'src/common/guards/authz/authz.guard';
 
 @ApiBearerAuth('access-token') 
 @Controller('permissions')
