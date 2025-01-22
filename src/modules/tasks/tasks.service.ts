@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { CreateTaskDto } from 'src/modules/tasks/dto/create-task.dto';
+import { UpdateTaskDto } from 'src/modules/tasks/dto/update-task.dto';
 import { PrismaService } from 'src/common/database/prisma.service';
 
 @Injectable()

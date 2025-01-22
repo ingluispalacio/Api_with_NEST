@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { TasksController } from './tasks.controller';
-import { TasksService } from './tasks.service';
-import { LoggerMiddleware } from './logger/logger.middleware';
+import { TasksController } from 'src/modules/tasks/tasks.controller';
+import { TasksService } from 'src/modules/tasks/tasks.service';
+import { LoggerMiddleware } from 'src/modules/tasks/logger/logger.middleware';
 import { PrismaService } from 'src/common/database/prisma.service';
 
 @Module({

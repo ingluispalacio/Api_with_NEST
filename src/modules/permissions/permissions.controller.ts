@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { PermissionsService } from './permissions.service';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { PermissionsService } from 'src/modules/permissions/permissions.service';
+import { CreatePermissionDto } from 'src/modules/permissions/dto/create-permission.dto';
+import { UpdatePermissionDto } from 'src/modules/permissions/dto/update-permission.dto';
 import { AuthzGuard } from 'src/common/guards/authz/authz.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth('access-token') 
 @Controller('permissions')

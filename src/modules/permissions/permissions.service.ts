@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { CreatePermissionDto } from 'src/modules/permissions/dto/create-permission.dto';
+import { UpdatePermissionDto } from 'src/modules/permissions/dto/update-permission.dto';
 import { PrismaService } from 'src/common/database/prisma.service';
 
 @Injectable()

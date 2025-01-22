@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Request, Patch, Post, UseGuards} from '@nestjs/common';
-import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { TasksService } from 'src/modules/tasks/tasks.service';
+import { CreateTaskDto } from 'src/modules/tasks/dto/create-task.dto';
+import { UpdateTaskDto } from 'src/modules/tasks/dto/update-task.dto';
 import { AuthzGuard } from 'src/common/guards/authz/authz.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth('access-token') 
 @Controller('tasks')
