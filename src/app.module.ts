@@ -9,6 +9,7 @@ import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { AuditsModule } from './modules/audits/audits.module';
+import { CacheManagerModule } from './common/cache-manager/cache-manager.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuditsModule } from './modules/audits/audits.module';
     RolesModule,
     PermissionsModule,
     AuditsModule,
+    CacheManagerModule,
   ],
   controllers: [],
   providers: [

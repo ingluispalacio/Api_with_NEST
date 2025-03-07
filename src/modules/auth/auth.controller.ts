@@ -6,8 +6,19 @@ import { LogInDto } from 'src/modules/auth/dto/log-in.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  async create(@Body() logInDto: LogInDto) {
+  @Post('login')
+  async login(@Body() logInDto: LogInDto) {
     return await this.authService.logIn(logInDto.email, logInDto.password);
+  }
+
+  @Post('refresh')
+  async refresh(@Body('refreshToken') refreshToken: string) {
+    return await this.authService.refreshAccessToken(refreshToken);
+  }
+
+  @Post('logout')
+  async logout(@Body('userId') userId: string) {
+    await this.authService.logout(userId);
+    return { message: 'User logged out successfully' };
   }
 }

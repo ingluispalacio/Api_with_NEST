@@ -4,10 +4,23 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: your_user
-      POSTGRES_PASSWORD: your_password
+      POSTGRES_USER: luis
+      POSTGRES_PASSWORD: luis04
       POSTGRES_DB: nestdb
     volumes:
-      - ./data:/vas/lib/postgresql/data
+      - ./data:/var/lib/postgresql/data
     ports:
-      - 5499:5432
+      - "5499:5432"
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

@@ -6,11 +6,16 @@ import {
 import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { UpdateUserDto } from 'src/modules/users/dto/update-user.dto';
 import { PrismaService } from 'src/common/database/prisma.service';
+import { CacheManagerService } from 'src/common/cache-manager/cache-manager.service';
+import { CACHE_TTL } from 'src/common/constants';
 import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cacheManager: CacheManagerService,
+  ) {}
 
   // Crear un usuario
   async create(user: CreateUserDto) {
@@ -20,9 +25,13 @@ export class UsersService {
         where: { email },
       });
       if (exist) throw new NotFoundException(`User with email ${email} exist`);
+
+      const roleExists = await this.prisma.role.findUnique({ where: { id: user.roleId } });
+      if (!roleExists) throw new NotFoundException(`Role with id ${user.roleId} not found`);
+
       const platinToHash = await hash(password, 10);
       user = { ...user, password: platinToHash };
-      return await this.prisma.user.create({
+      const newUser= await this.prisma.user.create({
         data: user,
         select: {
           id: true,
@@ -37,6 +46,8 @@ export class UsersService {
           },
         },
       });
+      await this.cacheManager.delCache(`users:*`);
+      return newUser;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
@@ -49,6 +60,11 @@ export class UsersService {
 
   // Obtener todos los usuarios con paginación
   async findAll(skip: number = 0, take: number = 10) {
+    const cacheKey = `users:skip:${skip}:take:${take}`;
+
+    const cachedData = await this.cacheManager.getCache<{ data: any[], total: number }>(cacheKey);
+    if (cachedData) return cachedData;
+
     const users= await this.prisma.user.findMany({
       select: {
         id: true,
@@ -62,15 +78,23 @@ export class UsersService {
           },
         },
       },
-      where: { deletedAt: null }, // Filtra usuarios "no eliminados"
+      where: { deletedAt: null }, 
       skip,
       take,
     });
-    return {data: users, message:"User List"};
+    const total = await this.prisma.user.count({ where: { deletedAt: null } });
+    const result = { data: users, total, message: "User List" };
+    await this.cacheManager.setCache(cacheKey, result, CACHE_TTL);
+    return result;
   }
 
   // Obtener un usuario por id
   async findById(id: string) {
+    const cacheKey = `user:${id}`;
+
+    const cachedUser = await this.cacheManager.getCache<any>(cacheKey);
+    if (cachedUser) return cachedUser;
+
     const user = await this.prisma.user.findUnique({
       select: {
         id: true,
@@ -86,9 +110,10 @@ export class UsersService {
       },
       where: { id },
     });
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+
+    
+    await this.cacheManager.setCache(cacheKey, user, CACHE_TTL);
     return user;
   }
 
@@ -97,19 +122,21 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
-    if (!user) {
-      throw new NotFoundException(`User with email ${email} not found`);
-    }
+
+    if (!user) throw new NotFoundException(`User with email ${email} not found`);
+
     return user;
   }
 
   // Actualizar un usuario
   async update(id: string, user: UpdateUserDto) {
     try {
-      return await this.prisma.user.update({
+      const updatedUser =  await this.prisma.user.update({
         where: { id },
         data: user,
       });
+      await this.cacheManager.delCache(`user:${id}`);
+      return updatedUser;
     } catch (error) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
@@ -118,10 +145,12 @@ export class UsersService {
   // Borrado suave de un usuario
   async remove(id: string) {
     try {
-      return await this.prisma.user.update({
+      const deletedUser = await this.prisma.user.update({
         where: { id },
         data: { deletedAt: new Date() },
       });
+      await this.cacheManager.delCache(`user:${id}`);
+      return deletedUser;
     } catch (error) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
